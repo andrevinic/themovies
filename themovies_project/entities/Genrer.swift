@@ -9,10 +9,10 @@
 import Foundation
 
 struct Genrer{
-    let id: Int
-    let name: String
-    
+    let id: Int?
+    let name: String?
 }
+
 extension Genrer: Decodable{
     
     private enum ResultCodingKeys: String, CodingKey{
@@ -23,8 +23,8 @@ extension Genrer: Decodable{
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ResultCodingKeys.self)
         
-        id = try container.decode(Int.self, forKey: .id)
-        name = try container.decode(String.self, forKey: .id)
+        id = try container.decodeIfPresent(Int.self, forKey: .id)
+        name = try container.decodeIfPresent(String.self, forKey: .name)
     }
     
 }

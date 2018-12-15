@@ -41,11 +41,11 @@ class UpcomingViewController: UIViewController {
         if (isLoad) { return }
         isLoad = true
 //        let page = self.catViewModel.cats_rx.value.count
-        NetworkManager.shared.fetchGenrers { (genrers, error) in
-            print(genrers)
-        }
+        
         NetworkManager.shared.fetchMovieList(page: 1, completion: { (movies, error) in
+        
             self.upcomingViewModel.upcoming_movies.accept(self.upcomingViewModel.upcoming_movies.value + movies)
+            print("FETCHED MOVIES: \(movies)")
             self.isLoad = false
         })
     }
@@ -54,7 +54,8 @@ class UpcomingViewController: UIViewController {
         upcomingViewModel.upcoming_movies.bind(to: collectionView.rx.items(cellIdentifier: R.reuseIdentifier.movieCollectionViewCell.identifier,
                                                          cellType: MovieCollectionViewCell.self))
         { [weak self] row, movie, cell in
-            cell.setupCell(name: movie.title, genre: movie.title, release_date: movie.release_date, id: movie.id)
+            cell.setupCell(name: movie.title, genre: "", release_date: movie.release_date, id: movie.id)
+            cell.setupImage(path: movie.poster_path)
             if (self == nil) { return }
 //            if (row == self!.upcomingViewModel.upcoming_movies.value.count - 1) {
 //                self?.loadData()
@@ -85,6 +86,7 @@ extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDele
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat =  10
         let collectionViewSize = collectionView.frame.size.width - padding
