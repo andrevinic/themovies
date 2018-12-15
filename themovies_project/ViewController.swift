@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // init
+        let viewmodel = UpcomingViewModel()
     }
 
     override func didReceiveMemoryWarning() {
