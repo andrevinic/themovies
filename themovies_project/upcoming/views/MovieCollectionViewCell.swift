@@ -14,7 +14,8 @@ class MovieCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var release_date: UILabel!
     @IBOutlet weak var poster_image: UIImageView!
     
-    func setupCell(name: String, genre: String, release_date: String){
+    let id: Int = 0
+    func setupCell(name: String, genre: String, release_date: String, id: Int){
         self.name.text = name
         self.genre.text  = genre
         self.release_date.text = release_date
