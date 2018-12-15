@@ -18,13 +18,13 @@ struct NetworkManager: Networkable{
     var provider = MoyaProvider<MovieService>(plugins: [NetworkLoggerPlugin(verbose: true)])
     static let shared:NetworkManager = NetworkManager()
     
-    func fetchGenrers(completion: @escaping (_ success: [Genrer], _ error: Error?) -> Void){
+    func fetchGenrers(completion: @escaping (_ success: [Genre], _ error: Error?) -> Void){
 
         provider.rx.request(.genrer).subscribe(onSuccess: { (response) in
            
-            if let results = try? response.map([Genrer].self, atKeyPath: nil, using: JSONDecoder(), failsOnEmptyData: true){
+            if let results = try? response.map(GenreList.self, atKeyPath: nil, using: JSONDecoder(), failsOnEmptyData: true){
 
-                completion(results, nil)
+                completion(results.genres, nil)
             }
             
             

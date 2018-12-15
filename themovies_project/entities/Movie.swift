@@ -15,7 +15,7 @@ struct Movie{
     var poster_path: String = ""
     var overview: String = ""
     var release_date: String = ""
-    var genres: [Int]? = []
+    var genres: [Int] = []
     //    let adult: Bool?
     
 }
@@ -39,7 +39,7 @@ extension Movie: Decodable{
         poster_path = try container.decode(String.self, forKey: .poster_path)
         overview = try container.decode(String.self, forKey: .overview)
         release_date = try container.decode(String.self, forKey: .release_date)
-        genres = try container.decodeIfPresent([Int].self, forKey: .genres)
+        genres = try container.decode([Int].self, forKey: .genres)
     }
 }
 

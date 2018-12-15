@@ -8,12 +8,30 @@
 
 import Foundation
 
-struct Genrer{
-    let id: Int?
+struct GenreList{
+    var genres: [Genre] = []
+}
+
+extension GenreList: Decodable{
+
+    private enum ResultCodingKeys: String, CodingKey{
+        case genres
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: ResultCodingKeys.self)
+        
+        genres = try container.decode([Genre].self, forKey: .genres)
+    }
+    
+}
+
+struct Genre{
+    let id: Int
     let name: String?
 }
 
-extension Genrer: Decodable{
+extension Genre: Decodable{
     
     private enum ResultCodingKeys: String, CodingKey{
         case id
@@ -23,7 +41,7 @@ extension Genrer: Decodable{
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ResultCodingKeys.self)
         
-        id = try container.decodeIfPresent(Int.self, forKey: .id)
+        id = try container.decode(Int.self, forKey: .id)
         name = try container.decodeIfPresent(String.self, forKey: .name)
     }
     

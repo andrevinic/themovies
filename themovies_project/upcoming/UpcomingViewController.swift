@@ -42,19 +42,52 @@ class UpcomingViewController: UIViewController {
         isLoad = true
 //        let page = self.catViewModel.cats_rx.value.count
         
+        let group = DispatchGroup()
+        
+        
+        ////////////////////////////////////////////////////////////////
+        //MARK:-
+        //MARK: Should get genres first
+        //MARK:-
+        ////////////////////////////////////////////////////////////////
+
+        group.enter()
+        upcomingViewModel.fetchGenres { (success) in
+             group.leave()
+        }
+        
+        
+        ////////////////////////////////////////////////////////////////
+        //MARK:-
+        //MARK:should get upcoming movies list
+        //MARK:-
+        ////////////////////////////////////////////////////////////////
+
+        group.enter()
         NetworkManager.shared.fetchMovieList(page: 1, completion: { (movies, error) in
         
             self.upcomingViewModel.upcoming_movies.accept(self.upcomingViewModel.upcoming_movies.value + movies)
             print("FETCHED MOVIES: \(movies)")
             self.isLoad = false
+              group.leave()
         })
     }
     
+   
     func bind() {
         upcomingViewModel.upcoming_movies.bind(to: collectionView.rx.items(cellIdentifier: R.reuseIdentifier.movieCollectionViewCell.identifier,
                                                          cellType: MovieCollectionViewCell.self))
         { [weak self] row, movie, cell in
-            cell.setupCell(name: movie.title, genre: "", release_date: movie.release_date, id: movie.id)
+           
+              
+            guard let str_genres = self?.upcomingViewModel.buildGenreStr(movie: movie)
+                else{
+                    return
+            }
+            
+            cell.setupCell(name: movie.title, genre: str_genres, release_date: movie.release_date, id: movie.id)
+           
+         
             cell.setupImage(path: movie.poster_path)
             if (self == nil) { return }
 //            if (row == self!.upcomingViewModel.upcoming_movies.value.count - 1) {
@@ -72,15 +105,12 @@ extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDele
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //
-//        guard let viewController = R.storyboard.main.catDogDetailsViewController()
+//        guard let viewController = ()
 //            else {
 //                return
 //        }
 //
-//        let dog = self.dogViewModel.dogs[indexPath.row]
-//        viewController.dog = dog
-//        self.navigationController?.pushViewController(viewController, animated: true)
-        
+
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
