@@ -12,6 +12,7 @@ import Moya
 enum MovieService{
     
     case upcoming
+    case genrer
 }
 
 extension MovieService:TargetType{
@@ -20,7 +21,9 @@ extension MovieService:TargetType{
         switch self{
         case .upcoming:
             var parameters = [String: String]()
-            parameters["x-api-key"] = "59aa9e50-90f1-4606-a83c-1a87cbf8e53e"
+            return parameters
+        case .genrer:
+            var parameters = [String: String]()
             return parameters
         default:
             return [String: String]()
@@ -42,6 +45,8 @@ extension MovieService:TargetType{
         switch self{
         case .upcoming:
             return "/movie/upcoming"
+        case .genrer:
+            return "/genre/movie/list"
         default:
             return ""
 
@@ -53,6 +58,8 @@ extension MovieService:TargetType{
         
         switch self {
         case .upcoming:
+            return .get
+        case .genrer:
             return .get
         default:
             return .get
@@ -70,6 +77,12 @@ extension MovieService:TargetType{
             parameters["page"] = 1
             
             return parameters
+        case .genrer:
+            var parameters = [String: Any]()
+            parameters["api_key"] = "1f54bd990f1cdfb230adb312546d765d"
+            parameters["language"] = "en-US"
+            return parameters
+            
         default:
             return [String: Any]()
 

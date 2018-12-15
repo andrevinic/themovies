@@ -41,6 +41,9 @@ class UpcomingViewController: UIViewController {
         if (isLoad) { return }
         isLoad = true
 //        let page = self.catViewModel.cats_rx.value.count
+        NetworkManager.shared.fetchGenrers { (genrers, error) in
+            print(genrers)
+        }
         NetworkManager.shared.fetchMovieList(page: 1, completion: { (movies, error) in
             self.upcomingViewModel.upcoming_movies.accept(self.upcomingViewModel.upcoming_movies.value + movies)
             self.isLoad = false
