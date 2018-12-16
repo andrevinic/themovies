@@ -11,36 +11,32 @@ import RxSwift
 import RxCocoa
 
 class UpcomingViewController: UIViewController {
-
+    
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet{
             collectionView.delegate = self
         }
     }
     
-    let numberOfCellsInRow: Int = 1
+    let numberOfCellsInRow: Int = 2
     var upcomingViewModel = UpcomingViewModel()
     let disposeBag = DisposeBag()
-    var isLoad = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(R.nib.movieCollectionViewCell(), forCellWithReuseIdentifier: R.reuseIdentifier.movieCollectionViewCell.identifier)
-
+        
         loadData()
         bind()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
- 
+        
     }
     
     
     func loadData() {
-        if (isLoad) { return }
-        isLoad = true
-//        let page = self.catViewModel.cats_rx.value.count
         
         let group = DispatchGroup()
         
@@ -50,10 +46,10 @@ class UpcomingViewController: UIViewController {
         //MARK: Should get genres first
         //MARK:-
         ////////////////////////////////////////////////////////////////
-
+        
         group.enter()
         upcomingViewModel.fetchGenres { (success) in
-             group.leave()
+            group.leave()
         }
         
         
@@ -62,41 +58,37 @@ class UpcomingViewController: UIViewController {
         //MARK:should get upcoming movies list
         //MARK:-
         ////////////////////////////////////////////////////////////////
-
-        group.enter()
-        NetworkManager.shared.fetchMovieList(page: 1, completion: { (movies, error) in
         
-            self.upcomingViewModel.upcoming_movies.accept(self.upcomingViewModel.upcoming_movies.value + movies)
-            print("FETCHED MOVIES: \(movies)")
-            self.isLoad = false
-              group.leave()
-        })
+        group.enter()
+        upcomingViewModel.fetchMovies { (success) in
+            group.leave()
+        }
     }
     
-   
+    
     func bind() {
         upcomingViewModel.upcoming_movies.bind(to: collectionView.rx.items(cellIdentifier: R.reuseIdentifier.movieCollectionViewCell.identifier,
-                                                         cellType: MovieCollectionViewCell.self))
+                                                                           cellType: MovieCollectionViewCell.self))
         { [weak self] row, movie, cell in
-           
-              
+            
+            
             guard let str_genres = self?.upcomingViewModel.buildGenreStr(movie: movie)
                 else{
                     return
             }
             
             cell.setupCell(name: movie.title, genre: str_genres, release_date: movie.release_date, id: movie.id)
-           
-         
+            
+            
             cell.setupImage(path: movie.poster_path)
             if (self == nil) { return }
-//            if (row == self!.upcomingViewModel.upcoming_movies.value.count - 1) {
-//                self?.loadData()
-//            }
+            if (row == self!.upcomingViewModel.upcoming_movies.value.count - 1) {
+                self?.loadData()
+            }
             }.disposed(by: self.disposeBag)
-    
+        
     }
-
+    
 }
 
 
@@ -104,13 +96,13 @@ extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDele
     //MARK: UICollectionViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//
-//        guard let viewController = ()
-//            else {
-//                return
-//        }
-//
-
+        //
+        //        guard let viewController = ()
+        //            else {
+        //                return
+        //        }
+        //
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -127,4 +119,5 @@ extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDele
         
     }
 }
+
 

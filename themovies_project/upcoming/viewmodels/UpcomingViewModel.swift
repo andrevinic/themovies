@@ -20,6 +20,17 @@ class UpcomingViewModel: NSObject {
     var upcoming_movies = BehaviorRelay<[Movie]>(value: [Movie]())
     
     var dictionary_genres:Dictionary<Int, String>? = [:]
+    var pagination = 1
+    
+    func fetchMovies(completion: @escaping (_ success: Bool)->Void){
+        NetworkManager.shared.fetchMovieList(page: pagination, completion: { (movies, error) in
+            
+            self.upcoming_movies.accept(self.upcoming_movies.value + movies)
+            completion(true)
+            self.pagination += 1
+        })
+    }
+    
     
     func fetchGenres(completion: @escaping (_ success: Bool)->Void){
         NetworkManager.shared.fetchGenrers { (genres, error) in
@@ -28,7 +39,7 @@ class UpcomingViewModel: NSObject {
             completion(true)
         }
     }
-
+    
 }
 
 extension UpcomingViewModel: UpcomingUtils{
@@ -67,4 +78,5 @@ extension UpcomingViewModel: UpcomingUtils{
         
     }
 }
+
 

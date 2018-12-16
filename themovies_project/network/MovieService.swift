@@ -11,7 +11,7 @@ import Moya
 
 enum MovieService{
     
-    case upcoming
+    case upcoming(pagination: Int)
     case genrer
 }
 
@@ -70,11 +70,11 @@ extension MovieService:TargetType{
     var parameters: [String: Any]? {
         switch self{
             
-        case .upcoming:
+        case .upcoming(let page):
             var parameters = [String: Any]()
             parameters["api_key"] = "1f54bd990f1cdfb230adb312546d765d"
             parameters["language"] = "en-US"
-            parameters["page"] = 1
+            parameters["page"] = page
             
             return parameters
         case .genrer:

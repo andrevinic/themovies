@@ -35,7 +35,7 @@ struct NetworkManager: Networkable{
     
     func fetchMovieList(page: Int, completion: @escaping (_ success: [Movie], _ error: Error?) -> Void){
         let provider = MoyaProvider<MovieService>(plugins: [NetworkLoggerPlugin(verbose: true)])
-        provider.rx.request(.upcoming).subscribe(onSuccess: { (response) in
+        provider.rx.request(.upcoming(pagination: page)).subscribe(onSuccess: { (response) in
             if let results = try? response.map(Upcoming.self, atKeyPath: nil, using: JSONDecoder(), failsOnEmptyData: true){
                 completion(results.movies, nil)
             }
