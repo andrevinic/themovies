@@ -20,13 +20,11 @@ extension MovieService:TargetType{
     var headers: [String : String]? {
         switch self{
         case .upcoming:
-            var parameters = [String: String]()
+            let parameters = [String: String]()
             return parameters
         case .genrer:
-            var parameters = [String: String]()
+            let parameters = [String: String]()
             return parameters
-        default:
-            return [String: String]()
             
         }
 
@@ -47,8 +45,6 @@ extension MovieService:TargetType{
             return "/movie/upcoming"
         case .genrer:
             return "/genre/movie/list"
-        default:
-            return ""
 
         }
         
@@ -60,8 +56,6 @@ extension MovieService:TargetType{
         case .upcoming:
             return .get
         case .genrer:
-            return .get
-        default:
             return .get
 
         }
@@ -82,9 +76,6 @@ extension MovieService:TargetType{
             parameters["api_key"] = "1f54bd990f1cdfb230adb312546d765d"
             parameters["language"] = "en-US"
             return parameters
-            
-        default:
-            return [String: Any]()
 
         }
     }

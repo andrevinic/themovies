@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2ol-Nj-HMK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Upcoming View Controller-->
+        <!--Movies-->
         <scene sceneID="6BC-ly-ZnC">
             <objects>
                 <viewController storyboardIdentifier="UpcomingViewController" id="2ol-Nj-HMK" customClass="UpcomingViewController" customModule="themovies_project" customModuleProvider="target" sceneMemberID="viewController">
@@ -48,7 +48,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="1ze-mB-Cof"/>
                     </view>
-                    <navigationItem key="navigationItem" id="ku0-cU-96s"/>
+                    <navigationItem key="navigationItem" title="Movies" id="ku0-cU-96s"/>
                     <connections>
                         <outlet property="collectionView" destination="up5-Xb-iTe" id="U51-NY-X2o"/>
                     </connections>
@@ -60,7 +60,7 @@
         <!--Navigation Controller-->
         <scene sceneID="hn5-VQ-TBK">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Rys-bM-UHz" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationUpComingViewController" automaticallyAdjustsScrollViewInsets="NO" id="Rys-bM-UHz" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Yot-G0-3T1">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>

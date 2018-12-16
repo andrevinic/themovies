@@ -17,6 +17,7 @@ protocol UpcomingUtils{
 }
 
 class UpcomingViewModel: NSObject {
+
     var upcoming_movies = BehaviorRelay<[Movie]>(value: [Movie]())
     
     var dictionary_genres:Dictionary<Int, String>? = [:]
