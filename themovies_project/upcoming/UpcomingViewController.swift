@@ -87,27 +87,23 @@ class UpcomingViewController: UIViewController {
             }
             }.disposed(by: self.disposeBag)
         
+        Observable.zip(collectionView.rx.itemSelected, collectionView.rx.modelSelected(Movie.self))
+            .bind { [weak self] (indexpath, movie) in
+                
+                let modalViewController = R.storyboard.detail.detailMovieModalViewController()
+                if let modalVC = modalViewController{
+                    modalVC.movie = movie
+                    modalVC.genres_dict = self?.upcomingViewModel.dictionary_genres
+                    self?.navigationController?.pushViewController(modalVC, animated: true)
+                }
+                
+            }.disposed(by: disposeBag)
+        
     }
-    
 }
 
-
-extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
+extension UpcomingViewController:UICollectionViewDelegateFlowLayout{
     //MARK: UICollectionViewDelegate
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //
-        //        guard let viewController = ()
-        //            else {
-        //                return
-        //        }
-        //
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat =  10
@@ -119,5 +115,3 @@ extension UpcomingViewController: UICollectionViewDelegate, UICollectionViewDele
         
     }
 }
-
-

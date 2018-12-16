@@ -93,12 +93,10 @@ extension MovieService:TargetType{
         return URLEncoding.default
     }
     
-    // 8:
     var sampleData: Data {
         return Data()
     }
     
-    // 9:
     var task: Task {
         guard let parameters = self.parameters else{
             return .requestPlain

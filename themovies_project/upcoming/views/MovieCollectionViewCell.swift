@@ -24,8 +24,10 @@ class MovieCollectionViewCell: UICollectionViewCell {
         self.release_date.text = release_date
     }
     
-    func setupImage(path: String){
-        self.poster_image.download(image: image_base_url + size + "/" + path, placeholder: nil)
+    func setupImage(path: String)->String{
+        let path = image_base_url + size + "/" + path
+        self.poster_image.download(image: path, placeholder: nil)
+        return path
     }
     
     override func awakeFromNib() {

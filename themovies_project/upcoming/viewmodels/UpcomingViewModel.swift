@@ -52,30 +52,8 @@ extension UpcomingViewModel: UpcomingUtils{
     }
     
     func buildGenreStr(movie: Movie) -> String?{
-        var genres_str = ""
-        var count = 1
-        
-        if let dictionary = self.dictionary_genres{
-            for genre in movie.genres{
-                
-                if count == movie.genres.count{
-                    if let value = dictionary[genre]{
-                        genres_str += value
-                    }
-                }else{
-                    if let value = dictionary[genre]{
-                        genres_str += value + ", "
-                    }
-                }
-                count += 1
-                
-            }
-        }else{
-            
-        }
-        
-        return genres_str
-        
+       
+        return StringHelper.buildGenreStr(movie: movie, dictionary_genres: self.dictionary_genres)
     }
 }
 

@@ -16,8 +16,8 @@ struct Movie{
     var overview: String = ""
     var release_date: String = ""
     var genres: [Int] = []
-    //    let adult: Bool?
-    
+    var full_path = ""
+
 }
 
 extension Movie: Decodable{
