@@ -19,7 +19,7 @@ class DetailMovieModalViewController: UIViewController {
     var movie: Movie? = nil
     let image_base_url = "https://image.tmdb.org/t/p/"
     let size = "original"
-    let genres = ""
+//    let genres = ""
     var genres_dict: Dictionary<Int, String>?
     
     override func viewDidLoad() {
@@ -36,11 +36,7 @@ class DetailMovieModalViewController: UIViewController {
             self.movie_overview.text = movie.overview
             self.movie_releasedate.text = movie.release_date
             self.movie_name.text = movie.title
-            if let dict = genres_dict{
-                self.movie_genres.text = StringHelper.buildGenreStr(movie: movie, dictionary_genres: dict)
-            }else{
-                self.movie_genres.text = genres
-            }
+            self.movie_genres.text = GenresManager.shared.buildGenreStr(movie: movie)
         }
     }
 

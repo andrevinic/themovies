@@ -19,8 +19,6 @@ protocol UpcomingUtils{
 class UpcomingViewModel: NSObject {
 
     var upcoming_movies = BehaviorRelay<[Movie]>(value: [Movie]())
-    
-    var dictionary_genres:Dictionary<Int, String>? = [:]
     var pagination = 1
     
     func fetchMovies(completion: @escaping (_ success: Bool)->Void){
@@ -32,30 +30,16 @@ class UpcomingViewModel: NSObject {
         })
     }
     
+    // MARK: - todo
     
-    func fetchGenres(completion: @escaping (_ success: Bool)->Void){
-        NetworkManager.shared.fetchGenrers { (genres, error) in
-            let myDict = self.toDictionary(genres: genres)
-            self.dictionary_genres = myDict
-            completion(true)
-        }
-    }
-    
-}
+    ////////////////////////////////////////////////////////////////
+    //MARK:-
+    //MARK: store list of genres in a singleton class
+    //MARK:- presentation of 1 cell per row portrait, landscape 2 cells per row
+    // MARK: - why used mvvm, why used libraries on readme.md
+    ////////////////////////////////////////////////////////////////
 
-extension UpcomingViewModel: UpcomingUtils{
     
-    func toDictionary(genres: [Genre])->Dictionary<Int, String>{
-        let myDict = genres.reduce(into: [Int: String]()) {
-            $0[$1.id] = $1.name
-        }
-        return myDict
-    }
-    
-    func buildGenreStr(movie: Movie) -> String?{
-       
-        return StringHelper.buildGenreStr(movie: movie, dictionary_genres: self.dictionary_genres)
-    }
 }
 
 

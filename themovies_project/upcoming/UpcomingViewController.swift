@@ -18,7 +18,9 @@ class UpcomingViewController: UIViewController {
         }
     }
     
-    let numberOfCellsInRow: Int = 2
+    
+    var cellsPerRow:CGFloat = 2
+    let cellPadding:CGFloat = 5
     var upcomingViewModel = UpcomingViewModel()
     let disposeBag = DisposeBag()
     
@@ -40,7 +42,6 @@ class UpcomingViewController: UIViewController {
         
         let group = DispatchGroup()
         
-        
         ////////////////////////////////////////////////////////////////
         //MARK:-
         //MARK: Should get genres first
@@ -48,7 +49,7 @@ class UpcomingViewController: UIViewController {
         ////////////////////////////////////////////////////////////////
         
         group.enter()
-        upcomingViewModel.fetchGenres { (success) in
+        GenresManager.shared.fetchGenres { (success) in
             group.leave()
         }
         
@@ -72,7 +73,7 @@ class UpcomingViewController: UIViewController {
         { [weak self] row, movie, cell in
             
             
-            guard let str_genres = self?.upcomingViewModel.buildGenreStr(movie: movie)
+            guard let str_genres = GenresManager.shared.buildGenreStr(movie: movie)
                 else{
                     return
             }
@@ -93,25 +94,27 @@ class UpcomingViewController: UIViewController {
                 let modalViewController = R.storyboard.detail.detailMovieModalViewController()
                 if let modalVC = modalViewController{
                     modalVC.movie = movie
-                    modalVC.genres_dict = self?.upcomingViewModel.dictionary_genres
+                    modalVC.genres_dict = GenresManager.shared.dictionary_genres
                     self?.navigationController?.pushViewController(modalVC, animated: true)
                 }
                 
             }.disposed(by: disposeBag)
         
     }
+    
+    
 }
-
-extension UpcomingViewController:UICollectionViewDelegateFlowLayout{
-    //MARK: UICollectionViewDelegate
+extension UpcomingViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let padding: CGFloat =  10
-        let collectionViewSize = collectionView.frame.size.width - padding
-        
-        let numberOfCells = CGFloat(self.numberOfCellsInRow)
-        let width = collectionViewSize / numberOfCells
-        return CGSize(width: width, height: width)
-        
+        let widthMinusPadding = UIScreen.main.bounds.width - (cellPadding + cellPadding * cellsPerRow)
+        let eachSide = widthMinusPadding / cellsPerRow
+        return CGSize(width: eachSide, height: eachSide)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        cellsPerRow = (traitCollection.verticalSizeClass == .compact) ? 2 : 1
+        collectionView.reloadData()
     }
 }
